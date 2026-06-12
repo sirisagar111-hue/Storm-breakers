@@ -2515,6 +2515,26 @@ function AppContent() {
                      This E2E clinical workspace operates with client-only zero-knowledge decryption. Hospital administrators cannot access, track, or recover record blocks. Take lock control.
                   </p>
 
+                  {/* Vault Passphrase explanation Box */}
+                  <div className="p-3 bg-indigo-50/70 border border-indigo-200/80 text-indigo-950 font-mono text-[9.5px] space-y-2 rounded-none">
+                    <p className="font-extrabold flex items-center gap-1.5 text-[10px] uppercase text-indigo-900 leading-none">
+                      <Key size={11} className="text-indigo-800" /> Vault Key Passphrases Explained
+                    </p>
+                    <p className="font-sans text-slate-600 leading-normal text-[10px]">
+                      Your records are stored as cryptographically locked blobs encrypted locally using <strong>AES-256</strong>. To access, open, or delegate records, the patient's individual passphrase must be provided.
+                    </p>
+                    <div className="pt-2 border-t border-indigo-200/50 leading-normal text-[10px]">
+                      <p className="font-bold uppercase text-indigo-950 text-[9px] mb-1">Sandbox Accounts (Use Default Keys):</p>
+                      <ul className="list-disc pl-4 space-y-1 font-sans text-slate-600 text-[9.5px]">
+                        <li><strong>Alice Johnson:</strong> <code className="bg-white px-1 py-0.5 border border-indigo-200 font-mono text-[9px] font-bold text-gray-900 select-all">alice-secure-vault-key</code></li>
+                        <li><strong>David Miller:</strong> <code className="bg-white px-1 py-0.5 border border-indigo-200 font-mono text-[9px] font-bold text-gray-900 select-all">david-secure-vault-key</code></li>
+                      </ul>
+                      <p className="font-sans text-slate-500 text-[8.5px] mt-1.5 italic">
+                        * Creating a new patient profile allows setting a custom passphrase or letting MedVault generate a high-entropy key phrase.
+                      </p>
+                    </div>
+                  </div>
+
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-mono text-[10px] font-bold uppercase text-gray-500">Pick Dynamic Node Session</span>
                     <button 
@@ -2654,9 +2674,12 @@ function AppContent() {
                             type="text" 
                             value={regContactNo}
                             onChange={(e) => setRegContactNo(e.target.value)}
-                            placeholder="+1 (555) 019-2834"
+                            placeholder="e.g., +91 9876543210 or +1 (555) 019-2834"
                             className="w-full border border-[#141414] p-2 font-mono text-xs focus:ring-0 outline-none rounded-none bg-white"
                           />
+                          <p className="font-mono text-[8px] text-slate-500 mt-1 uppercase tracking-tight leading-normal">
+                            * Accepts any international or regional phone format (numbers, plus signs, dashes, spaces).
+                          </p>
                         </div>
                         <div>
                           <label className="block font-mono text-[9px] uppercase font-extrabold text-gray-600 mb-0.5">Email ID</label>
@@ -2671,20 +2694,23 @@ function AppContent() {
                       </div>
 
                       {regRole === "Patient" && (
-                        <div>
-                          <div className="flex justify-between items-center mb-0.5">
-                            <label className="block font-mono text-[9px] uppercase font-extrabold text-gray-600">Sovereign Vault Key Passphrase</label>
-                            <span className="font-mono text-[7px] text-gray-400">SECRET</span>
+                        <div className="p-3 border border-emerald-200 bg-emerald-50/50 space-y-2">
+                          <div className="flex justify-between items-center">
+                            <label className="block font-mono text-[9.5px] uppercase font-extrabold text-emerald-900">Sovereign Vault Key Passphrase</label>
+                            <span className="font-mono text-[7px] bg-emerald-100 text-emerald-800 px-1 py-0.5 rounded-none font-bold uppercase">Secret & Local Only</span>
                           </div>
+                          <p className="font-sans text-[10.5px] text-slate-600 leading-normal">
+                            This passphrase derives your local symmetric key to cryptographically seal all uploaded lab records. It stays in memory and is <strong>never</strong> transmitted to developers or system administrators.
+                          </p>
                           <input 
                             type="password" 
                             value={regKey}
                             onChange={(e) => setRegKey(e.target.value)}
-                            placeholder="Leave empty to auto-generate high-entropy key..."
-                            className="w-full border border-[#141414] p-2 font-mono text-xs focus:ring-0 outline-none rounded-none bg-white"
+                            placeholder="Enter custom passphrase (or leave blank to auto-generate)..."
+                            className="w-full border border-emerald-950 p-2 font-mono text-xs focus:ring-0 outline-none rounded-none bg-white font-extrabold text-slate-800"
                           />
-                          <p className="font-mono text-[8px] text-gray-400 mt-1 uppercase tracking-tight leading-normal">
-                            * Auto key generation uses offline high-entropy pseudorandom words. Leave empty to auto-deploy secure sandbox key.
+                          <p className="font-mono text-[8px] text-emerald-800 uppercase tracking-tight leading-normal font-medium">
+                            * If left empty, a secure, mnemonic sandbox key phrase (e.g. <span className="underline font-bold">first-last-secure-vault-key</span>) is deployed. Please remember your key phrase; without it, nobody can ever decrypt your records again.
                           </p>
                         </div>
                       )}
